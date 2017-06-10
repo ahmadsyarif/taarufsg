@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:weightSum="3">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8">
+        <ImageView
+            android:id="@+id/iv_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icons8_groom_48"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+        <ImageView
+            android:id="@+id/iv_women"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icons8_bride_48"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+   <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="2.2"
+    android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="User xxx"
+                android:textColor="@android:color/black"
+                android:textSize="9pt"
+                android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:id="@+id/tv_birthday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:textSize="9pt"
+                android:text="20 April 1992"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:text="Hello my name is syarif, and I'm working and staying in singapore."/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
