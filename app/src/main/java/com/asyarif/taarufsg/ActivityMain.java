@@ -11,6 +11,8 @@ public class ActivityMain extends AppCompatActivity {
     RecyclerView mRv_listPeople;
     ListPeopleAdapter listPeopleAdapter;
 
+    public static final String EXTRA_USER_ID = "userId";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
