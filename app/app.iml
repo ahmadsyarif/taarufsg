@@ -111,6 +111,8 @@
     <orderEntry type="library" exported="" name="design-25.3.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-integration-1.3" level="project" />
     <orderEntry type="library" exported="" name="transition-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="firebase-auth-10.2.6" level="project" />
+    <orderEntry type="library" exported="" name="play-services-base-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="firebase-iid-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-core-10.2.6" level="project" />
