@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.ListPeopleViewHolder> {
 
     private static final String TAG = ListPeopleAdapter.class.getSimpleName();
-
+    private static final int TAG_POSITION = 0x0001;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseRoot;
     private ArrayList<User> mUsers;
@@ -111,7 +111,8 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
 
     @Override
     public void onBindViewHolder(ListPeopleViewHolder holder, int position) {
-        holder.bind(position);
+        User user = mUsers.get(position);
+        holder.bind(position,user);
     }
 
     @Override
@@ -126,6 +127,7 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
         TextView mDescription;
         ImageView mMaleIcon;
         ImageView mFemaleIcon;
+        int mId;
 
         public ListPeopleViewHolder(View itemView) {
             super(itemView);
@@ -135,25 +137,32 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
             mBirthday = (TextView)itemView.findViewById(R.id.tv_birthday);
             mMaleIcon = (ImageView)itemView.findViewById(R.id.iv_man);
             mFemaleIcon = (ImageView)itemView.findViewById(R.id.iv_women);
-
+            mId = 0;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            Log.v(TAG,v.toString());
+            try{
+                Log.v(TAG,mUsers.get(mId).mName);
+            }
+            catch (IndexOutOfBoundsException e){
+                Log.v(TAG,e.getMessage());
+            }
 
         }
 
-        public void bind(int position) {
+        public void bind(int position,User user) {
 
             try{
-                User user = mUsers.get(position);
-
+                mId = position;
                 mUser.setText(user.mName);
                 mMaleIcon.setVisibility(View.VISIBLE);
                 mFemaleIcon.setVisibility(View.INVISIBLE);
                 mBirthday.setText(user.mBirthday);
-                mDescription.setText(user.mDescription);}
+                mDescription.setText(user.mDescription);
+            }
             catch (IndexOutOfBoundsException e)
             {
                 Log.v(TAG,e.getMessage());
