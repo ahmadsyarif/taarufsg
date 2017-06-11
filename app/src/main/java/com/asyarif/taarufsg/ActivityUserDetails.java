@@ -46,22 +46,37 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                 mTv_username.setText(mUser.mName);
                 mTv_birthday.setText(mUser.mBirthday);
                 mTv_description.setText(mUser.mDescription);
-                if(!ActivityMain.mCurrentUser.mStatus.equals("Free")){
-                    minterested_button.setText("Currently you are matched");
+
+                if(ActivityMain.mCurrentUser.mStatus.equals("free")){
+                   if(ActivityMain.mCurrentUser.mSubject.equals(mUser.mUid)){
+                       minterested_button.setText("Uninterest");
+                   }
+                   else if(ActivityMain.mCurrentUser.mObject.equals(mUser.mUid)){
+                       minterested_button.setText("Accept Interest");
+                   }
+                   else if(!ActivityMain.mCurrentUser.mSubject.equals("")){
+                       minterested_button.setText("Max Limit");
+                   }
+                   else{
+                       minterested_button.setText("Interest");
+                   }
+
+                }
+                else if(ActivityMain.mCurrentUser.mStatus.equals("first match")){
+                    if(ActivityMain.mCurrentUser.mReplyToUser.equals("")){
+                        minterested_button.setText("Answer Question");
+                    }
+
+                    else if(mUser.mReplyToUser.equals("")){
+                        minterested_button.setText("First Match");
+                    }
+                    else {
+                        minterested_button.setText("Accept Answer");
+                    }
+
                 }
 
-                else if(ActivityMain.mCurrentUser.mSubject.equals(mUser.mUid) && !ActivityMain.mCurrentUser.mObject.equals(mUser.mUid)){
-                    minterested_button.setText("Uninterested");
-                }
-                else if(ActivityMain.mCurrentUser.mSubject.equals(mUser.mUid) && ActivityMain.mCurrentUser.mObject.equals(mUser.mUid)){
-                    minterested_button.setText(ActivityMain.mCurrentUser.mStatus);
-                }
-                else if(ActivityMain.mCurrentUser.mObject.equals(mUser.mUid)){
-                    minterested_button.setText("Accept Interest");
-                }
-                else if(!ActivityMain.mCurrentUser.mSubject.equals("")){
-                    minterested_button.setText("Can't select");
-                }
+
 
             }
             catch (IndexOutOfBoundsException e){
@@ -76,40 +91,57 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if(view.getId() == R.id.interested_button){
 
-            if(minterested_button.getText().toString().equals("Interested")){
+            if(minterested_button.getText().toString().equals("Interest")){
                 mUser.mObject = ActivityMain.mCurrentUser.mUid;
 
                 ActivityMain.mDatabaseRoot.child(mUser.mUid).child("object").setValue(ActivityMain.mCurrentUser.mUid);
                 ActivityMain.mDatabaseUserRoot.child("subject").setValue(mUser.mUid);
+                mUser.mObject = ActivityMain.mCurrentUser.mUid;
                 ActivityMain.mCurrentUser.mSubject = mUser.mUid;
 
-                minterested_button.setText("Uninterested");
+                minterested_button.setText("Uninterest");
 
                 Log.v(TAG,ActivityMain.mCurrentUser.mUid + " interest to " + mUser.mUid);
             }
-            else if(minterested_button.getText().toString().equals("Uninterested")){
+            else if(minterested_button.getText().toString().equals("Uninterest")){
                 mUser.mObject = ActivityMain.mCurrentUser.mUid;
 
                 ActivityMain.mDatabaseRoot.child(mUser.mUid).child("object").setValue("");
                 ActivityMain.mDatabaseUserRoot.child("subject").setValue("");
                 ActivityMain.mCurrentUser.mSubject = "";
-                minterested_button.setText("Interested");
+                mUser.mObject = "";
+                minterested_button.setText("Interest");
 
                 Log.v(TAG,ActivityMain.mCurrentUser.mUid + " interest to " + mUser.mUid);
             }
 
             else if(minterested_button.getText().toString().equals("Accept Interest")){
+
                 ActivityMain.mDatabaseRoot.child(mUser.mUid).child("object").setValue(ActivityMain.mCurrentUser.mUid);
+                mUser.mObject = ActivityMain.mCurrentUser.mUid;
                 ActivityMain.mDatabaseUserRoot.child("subject").setValue(mUser.mUid);
                 ActivityMain.mCurrentUser.mSubject = mUser.mUid;
 
                 Toast.makeText(ActivityUserDetails.this,"Congratulation you are match",
                         Toast.LENGTH_SHORT).show();
 
-                ActivityMain.mDatabaseRoot.child(mUser.mUid).child("status").setValue("First Match");
-                ActivityMain.mDatabaseUserRoot.child("status").setValue("First Match");
+                ActivityMain.mDatabaseRoot.child(mUser.mUid).child("status").setValue("first match");
+                ActivityMain.mDatabaseUserRoot.child("status").setValue("first match");
+                mUser.mStatus = "first match";
+                ActivityMain.mCurrentUser.mStatus = "first match";
 
-                minterested_button.setText("Frozen");
+                minterested_button.setText("Answer Question");
+            }
+            else if(minterested_button.getText().toString().equals("Answer Question")){
+                //TODO open new activity
+
+            }
+            else if(minterested_button.getText().toString().equals("Accept Answers")){
+                //TODO open new activity
+                ActivityMain.mDatabaseRoot.child(mUser.mUid).child("status").setValue("second match");
+                ActivityMain.mDatabaseUserRoot.child("status").setValue("second match");
+                mUser.mStatus = "second match";
+                ActivityMain.mCurrentUser.mStatus = "second match";
             }
 
 

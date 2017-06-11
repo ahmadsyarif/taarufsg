@@ -90,12 +90,11 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
         ActivityMain.mDatabaseUserRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //TODO fix this
                 ActivityMain.mCurrentUser.mObject = (String)dataSnapshot.child("object").getValue();
 
                 if(!ActivityMain.mCurrentUser.mObject.equals("") && mContext!=null){
-
-
-
                     for(User user : mUsers){
                         if(user.mUid.equals(ActivityMain.mCurrentUser.mObject)){
                             String name = user.mName;
@@ -129,16 +128,7 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
                 return null;
             }
 
-            String name = (String)user.child("name").getValue();
-            String birthday = (String)user.child("birthday").getValue();
-            String description = (String)user.child("description").getValue();
-
-            newUser = new User(name,birthday,description);
-            newUser.mUid = user.getKey();
-            newUser.mObject = (String)user.child("object").getValue();
-            newUser.mSubject = (String)user.child("mSubject").getValue();
-            newUser.mStatus = (String)user.child("status").getValue();
-            newUser.mGender = gender;
+            newUser = new User(user);
         }
 
         return newUser;
