@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.database.DatabaseReference;
+
 public class ActivityUserDetails extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = ActivityUserDetails.class.getSimpleName();
@@ -17,6 +19,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private TextView mTv_username,mTv_birthday,mTv_description;
     private Button minterested_button, mnext_button, mprevious_button;
 
+    User mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +41,17 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
         if(userId!=-1){
             try{
-                User user = ListPeopleAdapter.mUsers.get(userId);
-                mTv_username.setText(user.mName);
-                mTv_birthday.setText(user.mBirthday);
-                mTv_description.setText(user.mDescription);
+                mUser = ListPeopleAdapter.mUsers.get(userId);
+                mTv_username.setText(mUser.mName);
+                mTv_birthday.setText(mUser.mBirthday);
+                mTv_description.setText(mUser.mDescription);
+
+                if(ActivityMain.mCurrentUser.mSubject.equals(mUser.mUid)){
+                    minterested_button.setText("Uninterested");
+                }
+                else if(!ActivityMain.mCurrentUser.mSubject.equals("")){
+                    minterested_button.setText("Can't select");
+                }
 
             }
             catch (IndexOutOfBoundsException e){
@@ -54,6 +64,31 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
+        if(view.getId() == R.id.interested_button){
 
+            if(minterested_button.getText().toString().equals("Interested")){
+                mUser.mObject = ActivityMain.mCurrentUser.mUid;
+
+                ActivityMain.mDatabaseRoot.child(mUser.mUid).child("object").setValue(ActivityMain.mCurrentUser.mUid);
+                ActivityMain.mDatabaseUserRoot.child("subject").setValue(mUser.mUid);
+                ActivityMain.mCurrentUser.mSubject = mUser.mUid;
+
+                minterested_button.setText("Uninterested");
+
+                Log.v(TAG,ActivityMain.mCurrentUser.mUid + " interest to " + mUser.mUid);
+            }
+            else if(minterested_button.getText().toString().equals("Uninterested")){
+                mUser.mObject = ActivityMain.mCurrentUser.mUid;
+
+                ActivityMain.mDatabaseRoot.child(mUser.mUid).child("object").setValue("");
+                ActivityMain.mDatabaseUserRoot.child("subject").setValue("");
+                ActivityMain.mCurrentUser.mSubject = "";
+                minterested_button.setText("Interested");
+
+                Log.v(TAG,ActivityMain.mCurrentUser.mUid + " interest to " + mUser.mUid);
+            }
+
+
+        }
     }
 }

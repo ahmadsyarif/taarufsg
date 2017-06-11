@@ -21,6 +21,7 @@ public class ActivityMain extends AppCompatActivity {
     public static DatabaseReference mDatabase;
     public static DatabaseReference mDatabaseRoot;
     public static DatabaseReference mDatabaseUserRoot;
+    public static User mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

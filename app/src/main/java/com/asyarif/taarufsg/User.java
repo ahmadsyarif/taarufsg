@@ -15,6 +15,10 @@ public class User {
     public String mGender;
     public String mQuestion;
     public String mPhoneNumber;
+    public String mStatus;
+    public String mObject;
+    public String mSubject;
+    public String mUid;
 
     public User(String name, String birthday, String description){
         mName=name;
@@ -28,6 +32,9 @@ public class User {
         mGender = gender;
         mQuestion = phoneNumber;
         mPhoneNumber = question;
+        mStatus = "free";
+        mObject ="";
+        mSubject = "";
     }
 
     public Map<String,Object> toMap(){
@@ -38,7 +45,9 @@ public class User {
         result.put("gender", mGender);
         result.put("question", mQuestion);
         result.put("phoneNumber", mPhoneNumber);
-
+        result.put("status",mStatus);
+        result.put("object",mObject);
+        result.put("subject",mSubject);
         return result;
     }
 }

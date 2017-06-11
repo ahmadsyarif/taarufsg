@@ -3,6 +3,7 @@ package com.asyarif.taarufsg;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,8 @@ import java.util.Map;
 import static com.asyarif.taarufsg.ActivityMain.mDatabase;
 
 public class ActivityFillForm extends AppCompatActivity implements ValueEventListener,View.OnClickListener{
+
+    private static final String TAG = "ActivityFillForm";
 
     EditText mEt_name,mEt_birthday, mEt_gender, mEt_phoneNumber,mEt_description, mEt_question;
     Button mB_save;
@@ -62,7 +65,21 @@ public class ActivityFillForm extends AppCompatActivity implements ValueEventLis
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         if(dataSnapshot.hasChild(ActivityMain.mUser.getUid())){
-            updateUI(ActivityMain.mDatabaseRoot .child(ActivityMain.mUser.getUid()));
+
+            DataSnapshot userDataSnapshot =  dataSnapshot.child(ActivityMain.mUser.getUid());
+            String name = (String)userDataSnapshot.child("name").getValue();
+            String birthday = (String)userDataSnapshot.child("birthday").getValue();
+            String description = (String)userDataSnapshot.child("description").getValue();
+
+            ActivityMain.mCurrentUser = new User(name,birthday,description);
+            ActivityMain.mCurrentUser.mUid = userDataSnapshot.getKey();
+            ActivityMain.mCurrentUser.mObject = (String)userDataSnapshot.child("object").getValue();
+            ActivityMain.mCurrentUser.mSubject = (String)userDataSnapshot.child("subject").getValue();
+
+
+            ActivityMain.mDatabaseUserRoot = ActivityMain.mDatabaseRoot.child(ActivityMain.mUser.getUid());
+
+            updateUI(ActivityMain.mDatabaseRoot.child(ActivityMain.mUser.getUid()));
         }
         else{
             updateUI(null);
@@ -99,12 +116,21 @@ public class ActivityFillForm extends AppCompatActivity implements ValueEventLis
                     mEt_phoneNumber.getText().toString(),
                     mEt_question.getText().toString());
 
+
+
             Map<String, Object> map = user.toMap();
 
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/"+ActivityMain.mUser.getUid(),map);
 
+            user.mUid = ActivityMain.mUser.getUid();
+            ActivityMain.mCurrentUser = user;
+
+
             ActivityMain.mDatabaseRoot.updateChildren(childUpdates);
+            ActivityMain.mDatabaseUserRoot = ActivityMain.mDatabaseRoot.child(ActivityMain.mUser.getUid());
+
+            updateUI( ActivityMain.mDatabaseUserRoot);
 
         }
     }

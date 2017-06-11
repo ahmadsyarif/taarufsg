@@ -51,12 +51,13 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
                 // Get Post object and use the values to update the UI
                 mNumberOfUser = (int)dataSnapshot.getChildrenCount();
 
-                for(DataSnapshot user : dataSnapshot.getChildren()){
-                    String name = (String)user.child("name").getValue();
-                    String birthday = (String)user.child("birthday").getValue();
-                    String description = (String)user.child("description").getValue();
 
-                    mUsers.add(new User(name,birthday,description));
+                for(DataSnapshot user : dataSnapshot.getChildren()){
+                    User newUser = createUser(user);
+                    if(newUser!=null){
+                        mUsers.add(newUser);
+                    }
+
                 }
 
                 notifyDataSetChanged();
@@ -76,11 +77,10 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
                 mNumberOfUser = (int)dataSnapshot.getChildrenCount();
                 mUsers.clear();
                 for(DataSnapshot user : dataSnapshot.getChildren()){
-                    String name = (String)user.child("name").getValue();
-                    String birthday = (String)user.child("birthday").getValue();
-                    String description = (String)user.child("description").getValue();
-
-                    mUsers.add(new User(name,birthday,description));
+                    User newUser = createUser(user);
+                    if(newUser!=null){
+                        mUsers.add(newUser);
+                    }
                 }
 
                 notifyDataSetChanged();
@@ -93,6 +93,24 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
         });
     }
 
+
+    public User createUser(DataSnapshot user){
+        Log.v(TAG,user.getKey());
+        Log.v(TAG,ActivityMain.mCurrentUser.mUid);
+        User newUser = null;
+        if(!user.getKey().equals(ActivityMain.mCurrentUser.mUid)){
+            String name = (String)user.child("name").getValue();
+            String birthday = (String)user.child("birthday").getValue();
+            String description = (String)user.child("description").getValue();
+
+            newUser = new User(name,birthday,description);
+            newUser.mUid = user.getKey();
+            newUser.mObject = (String)user.child("object").getValue();
+            newUser.mSubject = (String)user.child("mSubject").getValue();
+        }
+
+        return newUser;
+    }
 
 
 
