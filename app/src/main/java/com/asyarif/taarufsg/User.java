@@ -76,11 +76,18 @@ public class User {
         result.put("birthday", mBirthday);
         result.put("description", mDescription);
         result.put("gender", mGender);
-        result.put("question/text", mQuestionText);
-        result.put("question/answerFrom/name", "");
-        result.put("question/answerFrom/text", "");
-        result.put("replyTo/name", "");
-        result.put("replyTo/text", "");
+        HashMap<String,Object> test = new HashMap<>();
+        HashMap<String,Object> test1 = new HashMap<>();
+        test.put("text",mQuestionText);
+        test1.put("name","");
+        test1.put("text","");
+        test.put("answerFrom",test1);
+        result.put("question", test);
+
+        HashMap<String,Object> test2 = new HashMap<>();
+        test2.put("name","");
+        test2.put("text","");
+        result.put("replyTo",test2);
         result.put("phone number", mPhoneNumber);
         result.put("status",mStatus);
         result.put("object",mObject);
