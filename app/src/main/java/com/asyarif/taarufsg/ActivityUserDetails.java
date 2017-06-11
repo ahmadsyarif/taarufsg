@@ -19,7 +19,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private ImageView mIv_photo;
     private TextView mTv_username,mTv_birthday,mTv_description;
     private Button minterested_button, mnext_button, mprevious_button;
-
+    private TextView mTv_answer;
     public static User mUser;
     int userId;
     @Override
@@ -36,7 +36,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         minterested_button = (Button)findViewById(R.id.interested_button);
         mnext_button = (Button) findViewById(R.id.next_button);
         mprevious_button = (Button) findViewById(R.id.previous_button);
-
+        mTv_answer = (TextView)findViewById(R.id.tv_answer);
         minterested_button.setOnClickListener(this);
         mnext_button.setOnClickListener(this);
         mprevious_button.setOnClickListener(this);
@@ -130,6 +130,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                     minterested_button.setText("Offline for Second Match");
                 }
 
+                if(mUser.mReplyToUser.equals(ActivityMain.mCurrentUser.mUid)){
+                    mTv_answer.setText(mUser.mReplyToText);
+                    mTv_answer.setVisibility(View.VISIBLE);
+                }
 
 
             }
