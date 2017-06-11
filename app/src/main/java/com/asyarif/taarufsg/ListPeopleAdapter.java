@@ -91,8 +91,7 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                //TODO fix this
-                ActivityMain.mCurrentUser.mObject = (String)dataSnapshot.child("object").getValue();
+                ActivityMain.mCurrentUser = new User(dataSnapshot);
 
                 if(!ActivityMain.mCurrentUser.mObject.equals("") && mContext!=null){
                     for(User user : mUsers){
@@ -102,8 +101,6 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-
-
                 }
 
             }

@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityMain"></activity>
+        <activity android:name=".ActivityMain" />
         <activity
             android:name=".ActivityLogin"
             android:label="@string/title_activity_login">
@@ -28,7 +28,8 @@
             android:name=".ActivityRegister"
             android:label="@string/title_activity_register" />
         <activity android:name=".ActivityUserDetails" />
-        <activity android:name=".ActivityFillForm"></activity>
+        <activity android:name=".ActivityFillForm" />
+        <activity android:name=".ActivityAnswerQuestion"></activity>
     </application>
 
 </manifest>
