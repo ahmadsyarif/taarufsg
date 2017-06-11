@@ -6,12 +6,21 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+
 public class ActivityMain extends AppCompatActivity {
 
     RecyclerView mRv_listPeople;
     ListPeopleAdapter listPeopleAdapter;
 
     public static final String EXTRA_USER_ID = "userId";
+
+    public static FirebaseUser mUser;
+
+    public static DatabaseReference mDatabase;
+    public static DatabaseReference mDatabaseRoot;
+    public static DatabaseReference mDatabaseUserRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
