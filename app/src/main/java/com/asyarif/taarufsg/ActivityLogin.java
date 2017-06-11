@@ -199,8 +199,8 @@ public class ActivityLogin extends Activity implements
 //            findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
 //
 //            findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());
-
-            Intent intent = new Intent(ActivityLogin.this,ActivityMain.class);
+            ActivityMain.mUser = user;
+            Intent intent = new Intent(ActivityLogin.this,ActivityFillForm.class);
             startActivity(intent);
         } else {
             mStatusTextView.setText(R.string.signed_out);
