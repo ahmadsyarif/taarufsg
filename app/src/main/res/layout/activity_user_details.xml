@@ -54,6 +54,7 @@
         android:text="TextView"
         android:layout_gravity="center_horizontal"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         android:layout_weight="0.05" />
 
     <Button
@@ -92,6 +93,9 @@
             android:text="Next" />
     </LinearLayout>
 
+=======
+        android:layout_weight="0.03" />
+>>>>>>> Stashed changes
 =======
         android:layout_weight="0.03" />
 >>>>>>> Stashed changes
