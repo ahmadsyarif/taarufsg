@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,8 +30,6 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
 
     private static final String TAG = ListPeopleAdapter.class.getSimpleName();
     private static final int TAG_POSITION = 0x0001;
-    private DatabaseReference mDatabase;
-    private DatabaseReference mDatabaseRoot;
     public static ArrayList<User> mUsers;
 
     private Context mContext;
@@ -38,14 +37,11 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
 
 
     public ListPeopleAdapter(){
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        mDatabaseRoot  = mDatabase.child("database");
 
         mUsers = new ArrayList<User>();
         mUsers.clear();
 
-        mDatabaseRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+        ActivityMain.mDatabaseRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
@@ -70,7 +66,7 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
             }
         });
 
-        mDatabaseRoot.addValueEventListener(new ValueEventListener() {
+        ActivityMain.mDatabaseRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
@@ -91,6 +87,33 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
                 Log.w(TAG, "onCancelled", databaseError.toException());
             }
         });
+        ActivityMain.mDatabaseUserRoot.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ActivityMain.mCurrentUser.mObject = (String)dataSnapshot.child("object").getValue();
+
+                if(!ActivityMain.mCurrentUser.mObject.equals("") && mContext!=null){
+
+
+
+                    for(User user : mUsers){
+                        if(user.mUid.equals(ActivityMain.mCurrentUser.mObject)){
+                            String name = user.mName;
+                            Toast.makeText(mContext, name + " has interest to you",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -98,7 +121,14 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
         Log.v(TAG,user.getKey());
         Log.v(TAG,ActivityMain.mCurrentUser.mUid);
         User newUser = null;
-        if(!user.getKey().equals(ActivityMain.mCurrentUser.mUid)){
+        if(!user.getKey().equals(ActivityMain.mCurrentUser.mUid) ){
+
+            String gender = (String)user.child("gender").getValue();
+
+            if(ActivityMain.mCurrentUser.mGender.equals(gender)){
+                return null;
+            }
+
             String name = (String)user.child("name").getValue();
             String birthday = (String)user.child("birthday").getValue();
             String description = (String)user.child("description").getValue();
@@ -107,6 +137,8 @@ public class ListPeopleAdapter extends RecyclerView.Adapter<ListPeopleAdapter.Li
             newUser.mUid = user.getKey();
             newUser.mObject = (String)user.child("object").getValue();
             newUser.mSubject = (String)user.child("mSubject").getValue();
+            newUser.mStatus = (String)user.child("status").getValue();
+            newUser.mGender = gender;
         }
 
         return newUser;

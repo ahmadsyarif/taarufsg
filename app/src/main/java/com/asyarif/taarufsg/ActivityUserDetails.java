@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -45,9 +46,18 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                 mTv_username.setText(mUser.mName);
                 mTv_birthday.setText(mUser.mBirthday);
                 mTv_description.setText(mUser.mDescription);
+                if(!ActivityMain.mCurrentUser.mStatus.equals("Free")){
+                    minterested_button.setText("Currently you are matched");
+                }
 
-                if(ActivityMain.mCurrentUser.mSubject.equals(mUser.mUid)){
+                else if(ActivityMain.mCurrentUser.mSubject.equals(mUser.mUid) && !ActivityMain.mCurrentUser.mObject.equals(mUser.mUid)){
                     minterested_button.setText("Uninterested");
+                }
+                else if(ActivityMain.mCurrentUser.mSubject.equals(mUser.mUid) && ActivityMain.mCurrentUser.mObject.equals(mUser.mUid)){
+                    minterested_button.setText(ActivityMain.mCurrentUser.mStatus);
+                }
+                else if(ActivityMain.mCurrentUser.mObject.equals(mUser.mUid)){
+                    minterested_button.setText("Accept Interest");
                 }
                 else if(!ActivityMain.mCurrentUser.mSubject.equals("")){
                     minterested_button.setText("Can't select");
@@ -86,6 +96,20 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                 minterested_button.setText("Interested");
 
                 Log.v(TAG,ActivityMain.mCurrentUser.mUid + " interest to " + mUser.mUid);
+            }
+
+            else if(minterested_button.getText().toString().equals("Accept Interest")){
+                ActivityMain.mDatabaseRoot.child(mUser.mUid).child("object").setValue(ActivityMain.mCurrentUser.mUid);
+                ActivityMain.mDatabaseUserRoot.child("subject").setValue(mUser.mUid);
+                ActivityMain.mCurrentUser.mSubject = mUser.mUid;
+
+                Toast.makeText(ActivityUserDetails.this,"Congratulation you are match",
+                        Toast.LENGTH_SHORT).show();
+
+                ActivityMain.mDatabaseRoot.child(mUser.mUid).child("status").setValue("First Match");
+                ActivityMain.mDatabaseUserRoot.child("status").setValue("First Match");
+
+                minterested_button.setText("Frozen");
             }
 
 

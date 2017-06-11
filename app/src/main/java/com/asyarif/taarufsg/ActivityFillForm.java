@@ -75,6 +75,8 @@ public class ActivityFillForm extends AppCompatActivity implements ValueEventLis
             ActivityMain.mCurrentUser.mUid = userDataSnapshot.getKey();
             ActivityMain.mCurrentUser.mObject = (String)userDataSnapshot.child("object").getValue();
             ActivityMain.mCurrentUser.mSubject = (String)userDataSnapshot.child("subject").getValue();
+            ActivityMain.mCurrentUser.mGender = (String)userDataSnapshot.child("gender").getValue();
+            ActivityMain.mCurrentUser.mStatus = (String)userDataSnapshot.child("status").getValue();
 
 
             ActivityMain.mDatabaseUserRoot = ActivityMain.mDatabaseRoot.child(ActivityMain.mUser.getUid());
